@@ -128,7 +128,7 @@ items-end
 
 <h1 className="text-[42px] font-semibold">
 
-{greeting()}
+{greeting()}, {activeEmployee.name}
 
 </h1>
 
