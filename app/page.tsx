@@ -21,6 +21,15 @@ const [activeEmployee,setActiveEmployee] = useState<typeof employees[number]>({.
 
 
 const [brands,setBrands] = useState<typeof employees[number]["brands"]>([]);
+const [storageKey, setStorageKey] = useState<string | null>(null);
+
+function greeting() {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  if (hour < 21) return "Good evening";
+  return "Good night";
+}
 
 useEffect(() => {
   let mounted = true;
@@ -32,8 +41,12 @@ useEffect(() => {
     }
     const email = user.email?.toLowerCase() ?? "";
     const name = email.includes("saadsaleem") ? "Saad" : email.includes("imran") ? "Mian Imran Ali Shah" : "Abdullah";
-    setActiveEmployee({ ...employees[0], name, brands: [] });
-    setBrands([]);
+    const key = `social-tracker-brands:${email}`;
+    const savedBrands = window.localStorage.getItem(key);
+    const userBrands = savedBrands ? JSON.parse(savedBrands) : [];
+    setStorageKey(key);
+    setActiveEmployee({ ...employees[0], name, brands: userBrands });
+    setBrands(userBrands);
     setLoading(false);
   });
   return () => { mounted = false; };
@@ -65,12 +78,20 @@ setBrands(employee.brands);
 
 function addBrand(name:string, platforms:string[]){
 
-setBrands((current) => [...current, { name, platforms }]);
+setBrands((current) => {
+  const next = [...current, { name, platforms }];
+  if (storageKey) window.localStorage.setItem(storageKey, JSON.stringify(next));
+  return next;
+});
 
 }
 
 function deleteBrand(name: string) {
-  setBrands((current) => current.filter((brand) => brand.name !== name));
+  setBrands((current) => {
+    const next = current.filter((brand) => brand.name !== name);
+    if (storageKey) window.localStorage.setItem(storageKey, JSON.stringify(next));
+    return next;
+  });
 }
 
 
@@ -107,7 +128,7 @@ items-end
 
 <h1 className="text-[42px] font-semibold">
 
-{activeEmployee.name}
+{greeting()}
 
 </h1>
 
