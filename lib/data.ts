@@ -9,7 +9,8 @@
           "Instagram",
           "Facebook",
           "YouTube",
-          "Snapchat"
+          "Snapchat",
+          "LinkedIn"
         ]
       },
       {
@@ -19,7 +20,8 @@
           "Instagram",
           "Facebook",
           "YouTube",
-          "Snapchat"
+          "Snapchat",
+          "LinkedIn"
         ]
       }
     ]
@@ -35,7 +37,8 @@
           "Instagram",
           "Facebook",
           "YouTube",
-          "Snapchat"
+          "Snapchat",
+          "LinkedIn"
         ]
       },
       {
@@ -45,7 +48,8 @@
           "Instagram",
           "Facebook",
           "YouTube",
-          "Snapchat"
+          "Snapchat",
+          "LinkedIn"
         ]
       }
     ]

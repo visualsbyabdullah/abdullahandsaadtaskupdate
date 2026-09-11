@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export const socialPlatforms = ["TikTok", "Instagram", "Facebook", "YouTube", "Snapchat"];
+export const socialPlatforms = ["TikTok", "Instagram", "Facebook", "YouTube", "Snapchat", "LinkedIn"];
 
 export default function PlatformLogo({ name }: { name: string }) {
   return (
