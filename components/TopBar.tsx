@@ -3,7 +3,7 @@
 import { UserCircle, LogOut } from "lucide-react";
 
 
-export default function TopBar(){
+export default function TopBar({ name, onLogout }: { name: string; onLogout: () => void }){
 
 return(
 
@@ -39,9 +39,7 @@ text-white
 </div>
 
 
-<span className="font-medium">
-Abdullah
-</span>
+<span className="font-medium">{name}</span>
 
 
 </div>
@@ -51,7 +49,7 @@ Abdullah
 
 {/* Right */}
 
-<button className="
+<button type="button" onClick={onLogout} className="
 h-12
 control-padding
 rounded-full

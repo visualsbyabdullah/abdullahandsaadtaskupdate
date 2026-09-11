@@ -1,6 +1,7 @@
 "use client";
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {useRouter} from "next/navigation";
 
 import TopBar from "@/components/TopBar";
 import BrandCard from "@/components/BrandCard";
@@ -8,15 +9,40 @@ import AddBrand from "@/components/AddBrand";
 import DateSelector from "@/components/DateSelector";
 
 import {employees} from "@/lib/data";
+import {supabase} from "@/lib/supabase";
 
 
 export default function Home(){
+const router = useRouter();
+const [loading, setLoading] = useState(true);
 
 
 const [activeEmployee,setActiveEmployee] = useState<typeof employees[number]>({...employees[0], brands: []});
 
 
 const [brands,setBrands] = useState<typeof employees[number]["brands"]>([]);
+
+useEffect(() => {
+  let mounted = true;
+  supabase.auth.getUser().then(({ data: { user } }) => {
+    if (!mounted) return;
+    if (!user) {
+      router.replace("/login");
+      return;
+    }
+    const email = user.email?.toLowerCase() ?? "";
+    const name = email.includes("saadsaleem") ? "Saad" : email.includes("imran") ? "Mian Imran Ali Shah" : "Abdullah";
+    setActiveEmployee({ ...employees[0], name, brands: [] });
+    setBrands([]);
+    setLoading(false);
+  });
+  return () => { mounted = false; };
+}, [router]);
+
+async function logout() {
+  await supabase.auth.signOut();
+  router.replace("/login");
+}
 
 
 
@@ -45,12 +71,14 @@ setBrands((current) => [...current, { name, platforms }]);
 
 
 
+if (loading) return <main className="flex min-h-screen items-center justify-center bg-[#eef0f2] text-sm text-gray-500">Loading your workspace...</main>;
+
 return(
 
 <main className="min-h-screen bg-[#eef0f2] p-8">
 
 
-<TopBar/>
+<TopBar name={activeEmployee.name} onLogout={logout}/>
 
 
 <section className="mt-6">
