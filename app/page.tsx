@@ -69,6 +69,10 @@ setBrands((current) => [...current, { name, platforms }]);
 
 }
 
+function deleteBrand(name: string) {
+  setBrands((current) => current.filter((brand) => brand.name !== name));
+}
+
 
 
 if (loading) return <main className="flex min-h-screen items-center justify-center bg-[#eef0f2] text-sm text-gray-500">Loading your workspace...</main>;
@@ -147,6 +151,7 @@ key={brand.name}
 name={brand.name}
 
 platforms={brand.platforms}
+onDelete={() => deleteBrand(brand.name)}
 
 />
 
