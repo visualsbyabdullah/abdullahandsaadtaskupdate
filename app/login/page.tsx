@@ -31,8 +31,8 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#eef0f2] p-6">
       <section className="w-full max-w-md rounded-[36px] bg-white p-8 shadow-[0_20px_60px_rgba(0,0,0,0.08)] sm:p-10">
-        <div className="mb-9">
-          <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-black text-xl font-bold text-white">S</div>
+        <div className="mb-9 text-center">
+          <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-black text-xl font-bold text-white">S</div>
           <h1 className="text-3xl font-semibold tracking-tight">Welcome back</h1>
           <p className="mt-2 text-sm text-gray-500">Sign in to your social tracker.</p>
         </div>
