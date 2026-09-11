@@ -13,12 +13,10 @@ import {employees} from "@/lib/data";
 export default function Home(){
 
 
-const [activeEmployee,setActiveEmployee] = useState(employees[0]);
+const [activeEmployee,setActiveEmployee] = useState({name: "Abdullah", brands: []});
 
 
-const [brands,setBrands] = useState(
-employees[0].brands
-);
+const [brands,setBrands] = useState<typeof employees[number]["brands"]>([]);
 
 
 
