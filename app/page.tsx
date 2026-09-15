@@ -22,6 +22,7 @@ const [activeEmployee,setActiveEmployee] = useState<typeof employees[number]>({.
 
 const [brands,setBrands] = useState<typeof employees[number]["brands"]>([]);
 const [storageKey, setStorageKey] = useState<string | null>(null);
+const [userId, setUserId] = useState<string | null>(null);
 
 function greeting() {
   const hour = new Date().getHours();
@@ -33,17 +34,19 @@ function greeting() {
 
 useEffect(() => {
   let mounted = true;
-  supabase.auth.getUser().then(({ data: { user } }) => {
+  supabase.auth.getUser().then(async ({ data: { user } }) => {
     if (!mounted) return;
     if (!user) {
       router.replace("/login");
       return;
     }
     const email = user.email?.toLowerCase() ?? "";
+    setUserId(user.id);
     const name = email.includes("saadsaleem") ? "Saad" : email.includes("imran") ? "Mian Imran Ali Shah" : "Abdullah";
     const key = `social-tracker-brands:${email}`;
+    const { data: databaseBrands } = await supabase.from("brands").select("id,name,platforms").eq("user_id", user.id).order("created_at");
     const savedBrands = window.localStorage.getItem(key);
-    const userBrands = savedBrands ? JSON.parse(savedBrands) : [];
+    const userBrands = databaseBrands?.length ? databaseBrands : (savedBrands ? JSON.parse(savedBrands) : []);
     setStorageKey(key);
     setActiveEmployee({ ...employees[0], name, brands: userBrands });
     setBrands(userBrands);
@@ -83,6 +86,7 @@ setBrands((current) => {
   if (storageKey) window.localStorage.setItem(storageKey, JSON.stringify(next));
   return next;
 });
+if (userId) void supabase.from("brands").insert({ user_id: userId, name, platforms });
 
 }
 
@@ -92,6 +96,7 @@ function deleteBrand(name: string) {
     if (storageKey) window.localStorage.setItem(storageKey, JSON.stringify(next));
     return next;
   });
+  if (userId) void supabase.from("brands").delete().eq("user_id", userId).eq("name", name);
 }
 
 
